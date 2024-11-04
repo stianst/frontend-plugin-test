@@ -1,0 +1,37 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  build:
+    name: Build
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Get Node.js version
+        id: tooling-versions
+        shell: bash
+        run: |
+          echo "node=$(mvn help:evaluate -Dexpression=node.version -q -DforceStdout | cut -c 2-)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        name: Cache Node.js
+        with:
+          path: |
+            ~/.m2/repository/com/github/eirslett/node
+          key: ${{ runner.os }}-frontend-plugin-artifacts-${{ steps.tooling-versions.outputs.node }}
+
+      - name: Build with Maven
+        run: mvn -X clean install
