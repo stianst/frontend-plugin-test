@@ -36,8 +36,8 @@ jobs:
         run: |
           mkdir -p ~/.m2/repository/com/github/eirslett/node/${{ steps.tooling-versions.outputs.node }}
           cd ~/.m2/repository/com/github/eirslett/node/${{ steps.tooling-versions.outputs.node }}
-          curl --retry 3 --retry-delay 30 -q https://nodejs.org/dist/v${{ steps.tooling-versions.outputs.node }}/node-v${{ steps.tooling-versions.outputs.node }}-linux-x64.tar.gz --output node-{{ steps.tooling-versions.outputs.node }}-linux-x64.tar.gz
-          curl --retry 3 --retry-delay 30 -q https://nodejs.org/dist/v${{ steps.tooling-versions.outputs.node }}/node-v${{ steps.tooling-versions.outputs.node }}-win-x64.zip --output node-{{ steps.tooling-versions.outputs.node }}-win-x64.zip
+          curl --retry 3 --retry-delay 30 -q -o node-{{ steps.tooling-versions.outputs.node }}-linux-x64.tar.gz https://nodejs.org/dist/v${{ steps.tooling-versions.outputs.node }}/node-v${{ steps.tooling-versions.outputs.node }}-linux-x64.tar.gz
+          curl --retry 3 --retry-delay 30 -q -o node-{{ steps.tooling-versions.outputs.node }}-win-x64.zip https://nodejs.org/dist/v${{ steps.tooling-versions.outputs.node }}/node-v${{ steps.tooling-versions.outputs.node }}-win-x64.zip
 
   test:
     needs: build
