@@ -55,4 +55,22 @@ jobs:
           distribution: temurin
           java-version: 21
 
+
+      - uses: actions/cache@v4
+        id: cache-nodejs
+        name: Cache Node.js
+        with:
+          path: |
+            ~/.m2/repository/com/github/eirslett/node
+          key: nodejs-${{ steps.tooling-versions.outputs.node }}
+
+      - name: Download Node.js
+        if: steps.cache-nodejs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/.m2/repository/com/github/eirslett/node/${{ steps.tooling-versions.outputs.node }}
+          cd ~/.m2/repository/com/github/eirslett/node/${{ steps.tooling-versions.outputs.node }}
+          curl --retry 3 --retry-delay 30 -q -o node-${{ steps.tooling-versions.outputs.node }}-linux-x64.tar.gz https://nodejs.org/dist/v${{ steps.tooling-versions.outputs.node }}/node-v${{ steps.tooling-versions.outputs.node }}-linux-x64.tar.gz
+          curl --retry 3 --retry-delay 30 -q -o node-${{ steps.tooling-versions.outputs.node }}-win-x64.zip https://nodejs.org/dist/v${{ steps.tooling-versions.outputs.node }}/node-v${{ steps.tooling-versions.outputs.node }}-win-x64.zip
+
+
       - run: mvn -X install
