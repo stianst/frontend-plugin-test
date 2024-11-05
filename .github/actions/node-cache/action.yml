@@ -9,7 +9,6 @@ runs:
       shell: bash
       run: |
         mvn help:evaluate -Dexpression=node.version
-        
         echo "node=$(mvn help:evaluate -Dexpression=node.version -q -DforceStdout | cut -c 2-)" >> $GITHUB_OUTPUT
 
     - uses: actions/cache@v4
