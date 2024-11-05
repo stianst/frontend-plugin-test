@@ -37,8 +37,8 @@ jobs:
           mkdir -p ~/.m2/repository/com/github/eirslett/node
           cd ~/.m2/repository/com/github/eirslett/node
           echo ${{ steps.tooling-versions.outputs.node }}
-          curl -O https://nodejs.org/dist/v22.11.0/node-v22.11.0-linux-x64.tar.gz
-          curl -O https://nodejs.org/dist/v22.11.0/node-v22.11.0-win-x64.zip
+          curl -O https://nodejs.org/dist/v${{ steps.tooling-versions.outputs.node }}/node-v${{ steps.tooling-versions.outputs.node }}-linux-x64.tar.gz
+          curl -O https://nodejs.org/dist/v${{ steps.tooling-versions.outputs.node }}/node-v${{ steps.tooling-versions.outputs.node }}-win-x64.zip
 
   test:
     needs: build
