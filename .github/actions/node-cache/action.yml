@@ -18,6 +18,7 @@ runs:
         path: |
           ~/.m2/repository/com/github/eirslett/node
         key: nodejs-${{ steps.tooling-versions.outputs.node }}
+        enableCrossOsArchive: true
 
     - name: Download Node.js
       if: steps.cache-nodejs.cache-hit != 'true'
