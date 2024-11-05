@@ -21,6 +21,7 @@ runs:
 
     - name: Download Node.js
       if: steps.cache-nodejs.cache-hit != 'true'
+      shell: bash
       run: |
         mkdir -p ~/.m2/repository/com/github/eirslett/node/${{ steps.tooling-versions.outputs.node }}
         cd ~/.m2/repository/com/github/eirslett/node/${{ steps.tooling-versions.outputs.node }}
