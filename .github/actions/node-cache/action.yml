@@ -4,15 +4,15 @@ description: Caches Node and PNPM binaries
 runs:
   using: composite
   steps:
-    - name: Get Node.js and PNPM versions
-      id: tooling-versions
+    - id: tooling-versions
+      name: Get Node.js and PNPM versions
       shell: bash
       run: |
-        mvn help:evaluate -Dexpression=node.version
-        echo "node=$(mvn help:evaluate -Dexpression=node.version -q -DforceStdout | cut -c 2-)" >> $GITHUB_OUTPUT
+        cat pom.xml | grep '<node.version>' | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -c 2-
+        echo "node=$(cat pom.xml | grep '<node.version>' | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -c 2-)" >> $GITHUB_OUTPUT
 
-    - uses: actions/cache@v4
-      id: cache-nodejs
+    - id: cache-nodejs
+      uses: actions/cache@v4
       name: Cache Node.js
       with:
         path: |
@@ -20,7 +20,7 @@ runs:
         key: nodejs-${{ steps.tooling-versions.outputs.node }}
         enableCrossOsArchive: true
 
-    - name: Download Node.js
+    - id: download-nodejs
       if: steps.cache-nodejs.cache-hit != 'true'
       shell: bash
       run: |
