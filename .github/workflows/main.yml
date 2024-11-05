@@ -6,10 +6,7 @@ on:
 jobs:
   build:
     name: Build
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -42,3 +39,12 @@ jobs:
           echo ${{ steps.tooling-versions.outputs.node }}
           curl -O https://nodejs.org/dist/v22.11.0/node-v22.11.0-linux-x64.tar.gz
           curl -O https://nodejs.org/dist/v22.11.0/node-v22.11.0-win-x64.zip
+
+  test:
+    needs: build
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: mvn -X install
